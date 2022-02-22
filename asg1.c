@@ -85,7 +85,7 @@ int main(int argc, char* argv[]) {
                 int t2Status = pthread_create(&thread2ID, NULL, &reverseMessage, (void *)sharedDS->message);
 
                 if (t2Status != 0) {
-                    printf("Thread 1 not succesfully created..Exiting..\n");
+                    fprintf(stdout, "Thread 1 not succesfully created..Exiting..\n");
                     exit(-1);
                 }
 

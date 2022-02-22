@@ -21,7 +21,7 @@ void* calcRatio(void* data) {
     double *ratio = (double*)malloc(sizeof(double));
     
     *ratio = (double)((dStore*)data)->num1 / (double)((dStore*)data)->num2;
-    printf("Thread 1: tig %ld, ratio is %.2lf\n", pthread_self(), *ratio);
+    fprintf(stdout, "Thread 1: tig %ld, ratio is %.2lf\n", pthread_self(), *ratio);
 
     pthread_exit((void *)ratio);
 
@@ -35,7 +35,7 @@ void* reverseMessage(void* message) {
         revMessage[strlen((char*)message) - i - 1] = ((char*)message)[i];
     }
 
-    printf("Thread 2: tig %ld, message is \"%s\"\n", pthread_self(), revMessage);
+    fprintf(stdout, "Thread 2: tig %ld, message is \"%s\"\n", pthread_self(), revMessage);
 
     pthread_exit((void *)revMessage);
 }
@@ -61,7 +61,7 @@ int main(int argc, char* argv[]) {
             int pid2 = fork();
 
             if (pid2 == 0) {
-                execl("./perimeter", "area", argv[1], argv[2], NULL);
+                execl("./perimeter", "perimeter", argv[1], argv[2], NULL);
 
             }
 
@@ -73,7 +73,7 @@ int main(int argc, char* argv[]) {
                 int t1Status = pthread_create(&thread1ID, NULL, &calcRatio, (void *)sharedDS);
 
                 if (t1Status != 0) {
-                    printf("Thread 1 not succesfully created..Exiting..\n");
+                    fprintf(stdout, "Thread 1 not succesfully created..Exiting..\n");
                     exit(-1);
                 }
 
@@ -93,7 +93,7 @@ int main(int argc, char* argv[]) {
                 pthread_join(thread1ID, (void**)&ratio);
                 pthread_join(thread2ID, (void**)&revMessage);
 
-                printf("\nParent: pid %d, ratio: %.2lf, message: \"%s\"\n", getpid(), *ratio, revMessage);
+                fprintf(stdout, "\nParent: pid %d, ratio: %.2lf, message: \"%s\"\n", getpid(), *ratio, revMessage);
 
                 free(ratio);
                 free(revMessage);
@@ -105,7 +105,7 @@ int main(int argc, char* argv[]) {
     }
 
     else {
-        printf("Incorrect # of CLAs provided.\nNeeded: 4, Provided: %d\n", argc);
+        fprintf(stdout, "Incorrect # of CLAs provided.\nNeeded: 4, Provided: %d\n", argc);
         exit(-1);
     }
 
